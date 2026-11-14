@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 
 /// Errors surfaced by the LuxTTS backend.

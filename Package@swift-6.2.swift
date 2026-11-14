@@ -3,7 +3,7 @@ import PackageDescription
 import Foundation
 
 // Tools 6.2+ manifest: identical to Package.swift plus the `NemoTextProcessing`,
-// `TTS` and `Diarizer` traits. Keep the two in sync; Package.swift serves
+// `TTS`, `Diarizer` and `LuxTTS` traits. Keep the two in sync; Package.swift serves
 // toolchains < 6.2, which always link the engine and compile every subsystem. (SwiftPM 6.1 accepts the trait syntax but still
 // links a trait-conditioned binary target — verified on Xcode 16.4 — so the
 // opt-out is gated at 6.2.)
@@ -48,7 +48,16 @@ let package = Package(
             name: "Diarizer",
             description: "Speaker diarization (pyannote, Sortformer, LS-EEND, Nemotron 3)."
         ),
-        .default(enabledTraits: ["NemoTextProcessing", "TTS", "Diarizer"]),
+        // Earmark fork: LuxTTS split out of `TTS`. Its G2P lexicon is eSpeak-NG output
+        // (GPL-3.0-or-later), so apps that only use Kokoro and the like opt out:
+        //   .package(url: ..., traits: ["TTS", "NemoTextProcessing"])
+        // Enabling `LuxTTS` also enables `TTS`.
+        .trait(
+            name: "LuxTTS",
+            description: "LuxTTS backend and its bundled eSpeak-NG-derived G2P data (GPL-3.0-or-later).",
+            enabledTraits: ["TTS"]
+        ),
+        .default(enabledTraits: ["NemoTextProcessing", "TTS", "Diarizer", "LuxTTS"]),
     ],
     dependencies: [],
     targets: [
@@ -62,12 +71,12 @@ let package = Package(
                     name: "NemoTextProcessing",
                     condition: .when(platforms: [.macOS, .iOS, .macCatalyst], traits: ["NemoTextProcessing"])
                 ),
-                .target(name: "LuxTtsG2pResources", condition: .when(traits: ["TTS"])),
+                .target(name: "LuxTtsG2pResources", condition: .when(traits: ["LuxTTS"])),
             ],
             path: "Sources/FluidAudio",
             exclude: ["ASR/Parakeet/Unified/benchmark.md"]
         ),
-        // Separate target so the ~1 MB G2P bundle drops out with the `TTS` trait.
+        // Separate target so the ~1 MB G2P bundle drops out with the `LuxTTS` trait.
         .target(
             name: "LuxTtsG2pResources",
             path: "Sources/LuxTtsG2pResources",

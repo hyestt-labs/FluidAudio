@@ -37,6 +37,8 @@ let package = Package(
                 // Package@swift-6.2.swift exposes these as opt-out traits (#990).
                 .define("TTS"),
                 .define("Diarizer"),
+                // Earmark fork: tools < 6.2 have no traits, so LuxTTS is always compiled in.
+                .define("LuxTTS"),
             ]
         ),
         .target(

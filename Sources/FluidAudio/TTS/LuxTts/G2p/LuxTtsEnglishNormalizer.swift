@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 
 /// Port of ZipVoice's English text normalization (EmiliaTokenizer path:

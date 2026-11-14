@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 
 /// Phoneme-token table for LuxTTS (`tokens.txt`, EmiliaTokenizer format:

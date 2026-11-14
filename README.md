@@ -1,3 +1,5 @@
+> **Earmark fork.** This is the `hyestt-labs/FluidAudio` fork used by the Earmark app. It tracks upstream `FluidInference/FluidAudio` v0.18.3 and adds one change: a `LuxTTS` SwiftPM trait (enabled by default, so upstream behavior is unchanged). The `LuxTtsG2pResources` target and the LuxTTS Swift sources (`Sources/FluidAudio/TTS/LuxTts/`) are built only when `LuxTTS` is on. Reason: the two LuxTTS G2P data files are eSpeak-NG output (GPL-3.0-or-later, see `ThirdPartyLicenses/LuxTtsEnglishG2P-LICENSE.md`), and Earmark uses only Kokoro. Earmark depends on this fork with `traits: ["TTS", "NemoTextProcessing"]`. Tag `0.18.3-earmark.1` is the first release of this change. Toolchains older than 6.2 have no traits, so `Package.swift` always defines `LuxTTS`.
+
 ![banner.png](banner.png)
 
 # FluidAudio - Transcription, Text-to-speech, VAD, Speaker diarization with CoreML Models

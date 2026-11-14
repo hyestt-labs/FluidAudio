@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 @preconcurrency import CoreML
 import Foundation
 

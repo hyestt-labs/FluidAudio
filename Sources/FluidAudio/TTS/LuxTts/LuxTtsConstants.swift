@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 
 /// Compile-time constants for the LuxTTS (ZipVoice-Distill) backend.

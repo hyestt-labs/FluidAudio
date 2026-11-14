@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Accelerate
 import Foundation
 

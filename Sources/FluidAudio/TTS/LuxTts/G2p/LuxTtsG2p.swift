@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 #if canImport(LuxTtsG2pResources)
 import LuxTtsG2pResources

@@ -1,4 +1,4 @@
-#if TTS
+#if TTS && LuxTTS
 import Foundation
 
 /// Pure host-side math for the LuxTTS pipeline: ratio-based duration
