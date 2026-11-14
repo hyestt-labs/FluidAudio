@@ -48,10 +48,10 @@ let package = Package(
             name: "Diarizer",
             description: "Speaker diarization (pyannote, Sortformer, LS-EEND, Nemotron 3)."
         ),
-        // Earmark fork: LuxTTS split out of `TTS`. Its G2P lexicon is eSpeak-NG output
-        // (GPL-3.0-or-later), so apps that only use Kokoro and the like opt out:
+        // Earmark fork：從 `TTS` 拆出 LuxTTS。它的 G2P 詞表是 eSpeak-NG 輸出
+        // （GPL-3.0-or-later），只用 Kokoro 等其他後端的 App 可以關掉：
         //   .package(url: ..., traits: ["TTS", "NemoTextProcessing"])
-        // Enabling `LuxTTS` also enables `TTS`.
+        // 開啟 `LuxTTS` 會一併開啟 `TTS`。
         .trait(
             name: "LuxTTS",
             description: "LuxTTS backend and its bundled eSpeak-NG-derived G2P data (GPL-3.0-or-later).",
