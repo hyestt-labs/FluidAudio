@@ -117,12 +117,20 @@ public enum ModelRegistry {
         return url
     }
 
+    /// Earmark fork：沒有明確給 revision 時，Kokoro repo 用 `Repo.kokoroRevision`，其餘維持上游的 `main`。
+    /// Kokoro 的 G2P 資料、詞表、聲音檔都走這條路徑，不經 `Repo.revision`。
+    static func defaultRevision(for repoPath: String) -> String {
+        guard repoPath == Repo.kokoro.remotePath else { return "main" }
+        return mapRevision(repoPath, default: Repo.kokoroRevision)
+    }
+
     /// Construct download URL for a model file
     public static func resolveModel(
         _ repoPath: String,
         _ filePath: String,
-        revision: String = "main"
+        revision: String? = nil
     ) throws -> URL {
+        let revision = revision ?? defaultRevision(for: repoPath)
         let urlString = "\(baseURL)/\(mapRepoPath(repoPath))/resolve/\(revision)/\(filePath)"
         guard let url = URL(string: urlString) else {
             throw Error.invalidURL(urlString)

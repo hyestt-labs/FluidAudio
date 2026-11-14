@@ -87,6 +87,29 @@ final class ModelRegistryTests: XCTestCase {
         XCTAssertEqual(url.absoluteString, expectedPath, "Resolve model URL should be constructed correctly")
     }
 
+    func testResolveModelPinsKokoroRepositoryByDefault() throws {
+        let url = try ModelRegistry.resolveModel(Repo.kokoro.remotePath, "us_lexicon_cache.json")
+
+        XCTAssertEqual(
+            url.absoluteString,
+            "https://huggingface.co/FluidInference/kokoro-82m-coreml/resolve/\(Repo.kokoroRevision)/us_lexicon_cache.json"
+        )
+    }
+
+    func testResolveModelKeepsExplicitRevisionForKokoroRepository() throws {
+        let url = try ModelRegistry.resolveModel(Repo.kokoro.remotePath, "vocab.json", revision: "main")
+
+        XCTAssertEqual(url.path, "/FluidInference/kokoro-82m-coreml/resolve/main/vocab.json")
+    }
+
+    func testKokoroDefaultRevisionFollowsMirrorRevisionOverride() throws {
+        ModelRegistry.revisionOverrides = [Repo.kokoro.remotePath: "mirror-release-1"]
+
+        let url = try ModelRegistry.resolveModel(Repo.kokoro.remotePath, "vocab.json")
+
+        XCTAssertEqual(url.path, "/FluidInference/kokoro-82m-coreml/resolve/mirror-release-1/vocab.json")
+    }
+
     func testResolveModelURLWithImmutableRevision() throws {
         let revision = "df2625ac79a7ac6b65ad868fee6d80f320da4232"
         let url = try ModelRegistry.resolveModel(

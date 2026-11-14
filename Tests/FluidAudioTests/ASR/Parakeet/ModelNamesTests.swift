@@ -32,6 +32,15 @@ final class ModelNamesTests: XCTestCase {
         XCTAssertEqual(Repo.vad.revision, "main")
     }
 
+    func testKokoroReposUseThePinnedRevision() {
+        let pinned = Repo.kokoroRevision
+        XCTAssertEqual(pinned.count, 40)
+        XCTAssertTrue(pinned.allSatisfy { $0.isHexDigit && !$0.isUppercase }, "revision 必須是完整的小寫 commit SHA")
+        for repo in [Repo.kokoro, .kokoroAne, .kokoroAneZh, .kokoroAneJa] {
+            XCTAssertEqual(repo.revision, pinned, "\(repo) 不可回到可變動的 main")
+        }
+    }
+
     func testRepoSubPathForVariants() {
         XCTAssertEqual(Repo.parakeetEou160.subPath, "160ms")
         XCTAssertEqual(Repo.parakeetEou320.subPath, "320ms")

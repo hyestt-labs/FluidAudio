@@ -331,6 +331,12 @@ public enum Repo: String, CaseIterable, Sendable {
         }
     }
 
+    /// Earmark fork：`FluidInference/kokoro-82m-coreml` 的固定 commit（2026-11-14 查詢 Hugging Face API 的 `sha`）。
+    /// 上游下載 Kokoro 時用可變動的 `main`，同一個 App 版本重新下載後模型可能不同。
+    /// 四個 Kokoro `Repo` 與 `ModelRegistry.resolveModel` 對這個 repo 的預設下載都用此值，
+    /// App 端把它當作模型版本識別（快取鍵）。
+    public static let kokoroRevision = "51c072023b254cd02368102ab88bcfbff6cad4cd"
+
     /// Immutable Hugging Face revision used for downloads.
     ///
     /// Most repositories retain the historical `main` behavior. Repositories
@@ -339,6 +345,8 @@ public enum Repo: String, CaseIterable, Sendable {
     /// FluidAudio version.
     public var revision: String {
         switch self {
+        case .kokoro, .kokoroAne, .kokoroAneZh, .kokoroAneJa:
+            return Repo.kokoroRevision
         case .diarizer:
             return "df2625ac79a7ac6b65ad868fee6d80f320da4232"
         case .phonon25:
